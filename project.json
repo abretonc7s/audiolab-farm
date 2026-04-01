@@ -1,0 +1,138 @@
+{
+  "$schema": "../../schemas/project.schema.json",
+  "name": "audiolab-farm",
+  "type": "monorepo",
+  "paths": {
+    "runtime_dir": "apps/playground/.agent"
+  },
+  "primary_repo": "/Users/deeeed/dev/audiolab",
+  "worktree_base": "/Users/deeeed/dev/audiolab-wt",
+  "apps": ["apps/playground", "apps/sherpa-voice", "apps/minimal"],
+  "fixtures": {
+    "templates": [
+      {
+        "dst": "CLAUDE.local.md",
+        "compose": {
+          "var": "FLOW_TYPE",
+          "variants": {
+            "": {
+              "includes": [
+                "CLAUDE.local.base.md",
+                ".agent/agentic-toolkit.md"
+              ]
+            },
+            "custom": {
+              "includes": [
+                "CLAUDE.local.custom.md",
+                "CLAUDE.local.base.md",
+                ".agent/agentic-toolkit.md"
+              ]
+            },
+            "fix-bug": {
+              "includes": [
+                "CLAUDE.local.agent.fix-bug.md",
+                "CLAUDE.local.base.md",
+                "CLAUDE.local.agent.md",
+                ".agent/agentic-toolkit.md"
+              ]
+            },
+            "new-feature": {
+              "includes": [
+                "CLAUDE.local.agent.feature.md",
+                "CLAUDE.local.base.md",
+                "CLAUDE.local.agent.md",
+                ".agent/agentic-toolkit.md"
+              ]
+            },
+            "review-pr": {
+              "includes": [
+                "CLAUDE.local.agent.review-pr.md",
+                "CLAUDE.local.base.md",
+                "CLAUDE.local.agent.md",
+                ".agent/agentic-toolkit.md"
+              ]
+            },
+            "pr-complete": {
+              "includes": [
+                "CLAUDE.local.base.md",
+                "CLAUDE.local.agent.md",
+                ".agent/agentic-toolkit.md"
+              ]
+            },
+            "merge-main": {
+              "includes": [
+                "CLAUDE.local.base.md",
+                "CLAUDE.local.agent.md",
+                ".agent/agentic-toolkit.md"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "src": ".agent/agentic-toolkit.md",
+        "dst": ".agent/agentic-toolkit.md"
+      }
+    ]
+  },
+  "hooks": {
+    "setup": "yarn install && cd apps/playground && yarn build:deps",
+    "preflight": "PLATFORM={{platform}} WATCHER_PORT={{port}} IOS_SIMULATOR={{simulator}} ADB_SERIAL={{adb_serial}} bash {{app}}/scripts/agentic/preflight.sh",
+    "health_check": "bash {{app}}/scripts/agentic/app-state.sh status",
+    "dev_server_check": "lsof -i :{{port}} >/dev/null 2>&1",
+    "recycle": "xcrun simctl shutdown {{simulator}}"
+  },
+  "health": {
+    "dev_server_log": "{{app}}/.agent/metro.log",
+    "dev_server_name": "Metro"
+  },
+  "platforms": {
+    "ios": {
+      "device_check": "xcrun simctl list devices booted 2>/dev/null | grep -q '{{simulator}}'",
+      "recycle": null
+    },
+    "android": {
+      "device_check": "adb devices 2>/dev/null | grep -q '{{adb_serial}}'",
+      "recycle": "adb -s {{adb_serial}} shell pm clear com.audiolab"
+    }
+  },
+  "resources": {
+    "ios-sim": {
+      "type": "device",
+      "platform": "ios",
+      "label": "iOS Sim",
+      "streamable": true,
+      "controllable": true,
+      "watch": { "type": "process-poll", "cmd": "xcrun simctl list devices booted 2>/dev/null | grep -q '{{simulator}}'" },
+      "hooks": {
+        "health": "xcrun simctl list devices booted 2>/dev/null | grep -q '{{simulator}}'",
+        "boot": "xcrun simctl boot '{{simulator}}'",
+        "shutdown": "xcrun simctl shutdown '{{simulator}}'"
+      }
+    },
+    "android-emu": {
+      "type": "device",
+      "platform": "android",
+      "label": "Android Emu",
+      "streamable": true,
+      "controllable": true,
+      "watch": { "type": "process-poll", "cmd": "adb -s {{adb_serial}} get-state 2>/dev/null | grep -q device" },
+      "hooks": {
+        "health": "adb -s {{adb_serial}} get-state 2>/dev/null | grep -q device",
+        "boot": "$ANDROID_HOME/emulator/emulator -avd {{avd}} &",
+        "shutdown": "adb -s {{adb_serial}} emu kill"
+      }
+    },
+    "dev-server": {
+      "type": "dev-server",
+      "label": "Metro",
+      "streamable": false,
+      "controllable": true,
+      "watch": { "type": "port-listen", "port": "{{port}}" },
+      "hooks": {
+        "health": "lsof -i :{{port}} >/dev/null 2>&1",
+        "shutdown": "lsof -ti :{{port}} 2>/dev/null | xargs kill 2>/dev/null; true"
+      }
+    }
+  }
+}
