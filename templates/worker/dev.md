@@ -1,6 +1,4 @@
-# Worker: New Feature
-
-> Orchestrator sends this to pool workers. Fully autonomous — zero human input.
+# Worker: Dev
 
 > **Signal file:** Write `{{TASK_DIR}}/SIGNAL.json` with status updates. The orchestrator watches this for instant completion detection.
 
@@ -24,6 +22,10 @@ REPO: {{REPO}}
 PLATFORM: {{PLATFORM}}
 WATCHER_PORT: {{WATCHER_PORT}}
 ```
+
+## Jira Comments
+
+{{JIRA_COMMENTS}}
 
 ## Checklist
 
