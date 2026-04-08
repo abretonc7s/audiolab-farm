@@ -24,11 +24,19 @@ SESSION: {{SESSION}}
 REPO: {{REPO}}
 PLATFORM: {{PLATFORM}}
 WATCHER_PORT: {{WATCHER_PORT}}
-PR_BODY: {{PR_BODY}}
-JIRA: {{JIRA}}
-JIRA_TITLE: {{JIRA_TITLE}}
-JIRA_DESCRIPTION: {{JIRA_DESCRIPTION}}
 ```
+
+## PR Body
+
+{{PR_BODY}}
+
+## Linked Tickets
+
+{{LINKED_TICKETS}}
+
+## Linked Ticket Descriptions
+
+{{LINKED_DESCRIPTIONS}}
 
 ## Checklist
 

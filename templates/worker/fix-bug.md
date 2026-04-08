@@ -13,8 +13,8 @@ You are an autonomous agent fixing a bug in the Audiolab monorepo. Work complete
 ## Task
 
 ```text
-JIRA: {{JIRA}}
-GITHUB_ISSUE: {{GITHUB_ISSUE}}
+TICKET: {{TICKET}}
+TICKET_URL: {{TICKET_URL}}
 TITLE: {{TITLE}}
 BRANCH: {{BRANCH}}
 PR_NUMBER: {{PR_NUMBER}}
@@ -28,6 +28,10 @@ ADB_SERIAL: {{ADB_SERIAL}}
 IOS_SIMULATOR: {{IOS_SIMULATOR}}
 ```
 
+## Description
+
+{{DESCRIPTION}}
+
 ## Acceptance Criteria
 
 {{ACCEPTANCE_CRITERIA}}
@@ -36,9 +40,13 @@ IOS_SIMULATOR: {{IOS_SIMULATOR}}
 
 {{AFFECTED_AREA}}
 
-## Bug Screenshots
+## Screenshots
 
-{{JIRA_SCREENSHOTS}}
+{{SCREENSHOTS}}
+
+## Comments
+
+{{COMMENTS}}
 
 ## Root Cause Hypothesis
 

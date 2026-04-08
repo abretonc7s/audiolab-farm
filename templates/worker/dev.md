@@ -11,8 +11,8 @@ You are an autonomous agent implementing a feature in the Audiolab monorepo. Wor
 ## Task
 
 ```text
-JIRA: {{JIRA}}
-GITHUB_ISSUE: {{GITHUB_ISSUE}}
+TICKET: {{TICKET}}
+TICKET_URL: {{TICKET_URL}}
 TITLE: {{TITLE}}
 BRANCH: {{BRANCH}}
 TASK_DIR: {{TASK_DIR}}
@@ -23,9 +23,25 @@ PLATFORM: {{PLATFORM}}
 WATCHER_PORT: {{WATCHER_PORT}}
 ```
 
-## Jira Comments
+## Description
 
-{{JIRA_COMMENTS}}
+{{DESCRIPTION}}
+
+## Acceptance Criteria
+
+{{ACCEPTANCE_CRITERIA}}
+
+## Affected Area
+
+{{AFFECTED_AREA}}
+
+## Screenshots
+
+{{SCREENSHOTS}}
+
+## Comments
+
+{{COMMENTS}}
 
 ## Checklist
 
