@@ -11,3 +11,5 @@ scores/
 # OS / runtime
 .DS_Store
 *.log
+.omc
+.omx
