@@ -62,8 +62,8 @@ STATUS: pending
 
 ### Signal (step 9)
 
-- [ ] **9. Write SIGNAL.json and exit:**
+- [ ] **9. Write SIGNAL.json:**
   ```bash
   echo '{"status":"complete","outcome":"success","timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' > {{TASK_DIR}}/SIGNAL.json
   ```
-  Then: `/exit`
+  **Do NOT `/exit`. Stay alive — CI-watch may nudge you again if new issues appear.**
