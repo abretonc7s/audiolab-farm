@@ -61,6 +61,38 @@ Useful flags:
 - Keep recipes focused on the bug or feature claim, not on generic app boot checks.
 - A good recipe would fail if the fix were reverted.
 
+## Recipe Validation & Video Evidence
+
+### Graph Validation
+
+After editing any recipe node, run schema validation then a dry run:
+
+```bash
+bash scripts/agentic/validate-flow-schema.sh              # catches orphaned nodes, dangling next pointers, cycles
+bash scripts/agentic/validate-recipe.sh <recipe.json> --dry-run   # walks the graph without executing
+```
+
+Fix all issues before proceeding — then re-run both to confirm no regressions.
+
+### Video Recording Philosophy
+
+**Core principle: setup via eval, proof via navigation.**
+
+- **Preconditions** (set state, toggle features) → use `eval_sync`/`eval_async`. Fast, no visual noise, no wasted video time.
+- **Visual proof** → navigate FROM a different screen TO the target screen. Shows intent and the full transition.
+- **Gate-check route**: before the visual proof section, detect the current route. If already on target, navigate away first so the video captures the full arrival.
+
+**Video length**: aim for 15-30s of meaningful visual activity. >45s → move more setup into eval or split into segments.
+
+**Animated scroll**: break long scrolls into 2+ intermediate steps with short pauses so motion is visible in the recording.
+
+**Skeleton loading**: always `wait_for` the main content element after navigation before proceeding — don't record skeleton frames.
+
+### Assertion Gotchas
+
+- **`wait_for`**: checks React fiber tree existence, NOT visual visibility or scroll position. For transient states (<500ms like spinners), prove via side effects — list growth, log entries, state changes.
+- **`log_watch`**: `watch_for` is informational (count only, no hard fail). Use `must_not_appear` for hard failures. To assert a log appeared, pair with a separate hard assertion.
+
 ## Platform Guidance
 
 - `playground` stable UI flows are good candidates for `--matrix ios,android,web`.
