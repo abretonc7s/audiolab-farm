@@ -40,10 +40,18 @@ STATUS: pending
 
 ### Verify (steps 5-6)
 
-- [ ] **5. Run lint + typecheck:**
+- [ ] **5. Auto-fix + CI parity gate:**
   ```bash
-  yarn lint:fix && yarn lint:tsc
+  cd {{REPO}}
+  # Auto-fix (best-effort, NOT a gate):
+  yarn lint:fix || true
+
+  # CI PARITY CHECK (strict — must all pass before pushing):
+  # DO NOT substitute `lint:fix` — it's an auto-fixer that exits 0, not a validator.
+  yarn lint 2>&1 | tail -20
+  yarn lint:tsc 2>&1 | tail -30
   ```
+  STOP if any command exits non-zero. Fix the errors before proceeding.
 - [ ] **6. Run affected tests** (if any test files changed):
   ```bash
   yarn jest <changed-test-files> --no-coverage 2>&1 | tail -20
@@ -53,7 +61,10 @@ STATUS: pending
 
 - [ ] **7. Commit and push:**
   ```bash
-  git add -A && git commit -m "fix: address CI feedback" && git push
+  # Only stage files YOU intentionally changed for the fix.
+  # Do NOT use `git add -A` — lint:fix may have modified unrelated files.
+  git add <file1> <file2> ...
+  git commit -m "fix: address CI feedback" && git push
   ```
 - [ ] **8. Reply to each bot comment thread** (skip if CI-failures-only):
   ```bash
