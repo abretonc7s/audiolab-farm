@@ -40,6 +40,8 @@ WATCHER_PORT: {{WATCHER_PORT}}
 
 ## Checklist
 
+**When updating STATUS or checkboxes, make the edit idempotent.** If a line is already `[x]`, do not try to patch it again; verify the file state and continue.
+
 Execute top-to-bottom. Every step is mandatory. Do NOT skip, reorder, or batch steps.
 
 ### Setup
