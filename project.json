@@ -2,6 +2,7 @@
   "$schema": "../../schemas/project.schema.json",
   "name": "audiolab-farm",
   "type": "monorepo",
+  "default_safety_tier": "dangerous",
   "paths": {
     "runtime_dir": "apps/playground/.agent"
   },
