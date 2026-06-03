@@ -53,7 +53,7 @@ Execute top-to-bottom. Every step is mandatory. Do NOT skip, reorder, or batch s
 ### Fix
 
 - [ ] **5. Apply minimal fixes for all REAL comments** — keep the diff tight.
-- [ ] **6. Reuse an existing recipe when the comment touches a user-visible or stateful flow. If no recipe proves the fix, write `"$TASK_ARTIFACT_DIR/recipe.json"`** with fully qualified refs.
+- [ ] **6. Reuse an existing recipe when the comment touches a user-visible or stateful flow. If no recipe proves the fix, write `"$TASK_ARTIFACT_DIR/recipe.json"`** with fully qualified refs. Every executable recipe node must include `intent`: one short HUD sentence that tells the human what the agent is doing now.
 - [ ] **7. Validate recipe structure when step 6 produced a recipe** — from `{{REPO}}/$APP_DIR` run:
   ```bash
   bash scripts/agentic/validate-pre-conditions.sh

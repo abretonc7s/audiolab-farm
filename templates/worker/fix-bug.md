@@ -60,6 +60,19 @@ IOS_SIMULATOR: {{IOS_SIMULATOR}}
 
 Execute top-to-bottom. Every step is mandatory. Do NOT skip, reorder, or batch steps.
 
+
+### Early no-change exit (before code/PR mutations)
+
+After `STATUS: working`, first decide if a code fix is still needed. If the bug is already fixed or cannot be reproduced in a valid target environment, do not create a fake commit/PR. Write `{{TASK_DIR}}/artifacts/no-change-report.md` with proof/repro steps, observed result, and evidence paths, then write one terminal `SIGNAL.json` and stop.
+
+- Already fixed / not reproducible: `status=complete`, `outcome=success`, `disposition=already_fixed|not_reproducible`, plus evidence `{ reportPath, artifacts, confidence, noCodeChange: true, reproductionAttempted: true }`.
+- Blocked: use `status=blocked`, `outcome=partial`, `disposition=blocked` for branch/env/auth/device/CDP/precondition problems. Never call setup failure `not_reproducible`.
+
+Signal shape:
+```json
+{ "status": "complete", "outcome": "success", "disposition": "already_fixed", "reason": "<one sentence>", "evidence": { "reportPath": "{{TASK_DIR}}/artifacts/no-change-report.md", "artifacts": ["{{TASK_DIR}}/artifacts/<proof>"], "confidence": "high", "noCodeChange": true, "reproductionAttempted": true }, "timestamp": "<UTC ISO8601>" }
+```
+
 ### Setup
 
 - [ ] **1. Read the recipe docs** — read `{{REPO}}/.agent/agentic-toolkit.md`, `{{REPO}}/scripts/agentic/README.md`, and the target app quick reference under `apps/*/docs/AGENTIC_FEEDBACK_LOOPS.md`.
@@ -91,10 +104,13 @@ Execute top-to-bottom. Every step is mandatory. Do NOT skip, reorder, or batch s
 
 - [ ] **7. Reproduce the bug before changing code** — use the app-local agentic commands to reach the affected route or flow.
 - [ ] **8. If the bug affects a user-visible or stateful flow, write `"$TASK_ARTIFACT_DIR/recipe.json"` before code changes.**
-  Recipe rules:
+
+
+Recipe rules:
   - Prefer existing `flow_ref` and `eval_ref` over raw steps.
   - Because the recipe file lives outside `scripts/agentic/teams/...`, every ref must be fully qualified like `playground/record-screen-smoke` or `sherpa/asr-ui`.
   - The recipe must assert the real broken behavior so it would fail if your fix were reverted.
+  - Every executable recipe node must include `intent`: one short HUD sentence that tells the human what the agent is doing now.
   - Keep it focused. Use the runner's built-in HUD and failure artifacts instead of bloating the recipe.
 - [ ] **9. Validate recipe structure** — from `{{REPO}}/$APP_DIR` run:
   ```bash
@@ -140,5 +156,5 @@ Execute top-to-bottom. Every step is mandatory. Do NOT skip, reorder, or batch s
 - [ ] **20. Update Status** — set `STATUS: done`.
 - [ ] **21. Write completion signal**:
   ```bash
-  echo '{"status":"complete","outcome":"success","timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' > {{TASK_DIR}}/SIGNAL.json
+  echo '{"status":"complete","outcome":"success","disposition":"fixed","timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' > {{TASK_DIR}}/SIGNAL.json
   ```

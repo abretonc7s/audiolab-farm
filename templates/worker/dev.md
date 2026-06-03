@@ -83,6 +83,7 @@ Execute top-to-bottom. Every step is mandatory. Do NOT skip, reorder, or batch s
   - Reuse existing `flow_ref` and `eval_ref` first.
   - Because the recipe file lives outside `scripts/agentic/teams/...`, every ref must be fully qualified like `playground/...` or `sherpa/...`.
   - The recipe must assert the actual feature behavior, not just app startup.
+  - Every executable recipe node must include `intent`: one short HUD sentence that tells the human what the agent is doing now.
 - [ ] **10. Validate recipe structure** — from `{{REPO}}/$APP_DIR` run:
   ```bash
   bash scripts/agentic/validate-pre-conditions.sh

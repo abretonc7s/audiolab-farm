@@ -76,6 +76,7 @@ Execute top-to-bottom. Every step is mandatory. Do NOT skip, reorder, or batch s
   Rules:
   - Use fully qualified refs like `playground/...` or `sherpa/...`.
   - The recipe must prove the PR's claimed behavior, not just that the app boots.
+  - Every executable recipe node must include `intent`: one short HUD sentence that tells the human what the agent is doing now.
 - [ ] **10. Validate the review recipe** — from `{{REPO}}/$APP_DIR` run:
   ```bash
   bash scripts/agentic/validate-pre-conditions.sh
