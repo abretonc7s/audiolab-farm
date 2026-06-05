@@ -6,8 +6,8 @@
   "paths": {
     "runtime_dir": "apps/playground/.agent"
   },
-  "primary_repo": "/Users/deeeed/dev/audiolab",
-  "worktree_base": "/Users/deeeed/dev/audiolab-wt",
+  "primary_repo": "/Volumes/c910ssd/dev/audiolab",
+  "worktree_base": "/Volumes/c910ssd/dev/audiolab-wt",
   "apps": ["apps/playground", "apps/sherpa-voice", "apps/minimal"],
   "fixtures": {
     "templates": [
@@ -77,14 +77,17 @@
     ]
   },
   "hooks": {
-    "setup": "yarn install && cd apps/playground && yarn build:deps",
-    "preflight": "PLATFORM={{platform}} WATCHER_PORT={{port}} IOS_SIMULATOR={{simulator}} ADB_SERIAL={{adb_serial}} bash {{app}}/scripts/agentic/preflight.sh",
-    "health_check": "bash {{app}}/scripts/agentic/app-state.sh status",
-    "dev_server_check": "lsof -i :{{port}} >/dev/null 2>&1",
+    "setup": "export PATH=\"${HOME}/.asdf/shims:${HOME}/.asdf/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH\"; export APP_VARIANT=\"${APP_VARIANT:-development}\" NODE_ENV=\"${NODE_ENV:-development}\" COREPACK_ENABLE_DOWNLOAD_PROMPT=\"${COREPACK_ENABLE_DOWNLOAD_PROMPT:-0}\" EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE=\"${EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE:-1}\" WATCHER_PORT=\"${WATCHER_PORT:-{{port}}}\" CDP_PORT=\"${CDP_PORT:-9222}\"; for k in AUDIOLAB_NPM_TOKEN EAS_PROJECT_ID APPLE_TEAM_ID; do if [ -z \"$(printenv $k)\" ]; then v=$(launchctl getenv \"$k\" 2>/dev/null || true); if [ -z \"$v\" ]; then v=$(tmux show-environment -g \"$k\" 2>/dev/null | sed \"s/^$k=//\" || true); fi; if [ -n \"$v\" ]; then export \"$k=$v\"; fi; fi; done; yarn install --immutable && cd apps/playground && yarn build:deps",
+    "preflight": "export PATH=\"${HOME}/.asdf/shims:${HOME}/.asdf/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH\"; export APP_VARIANT=\"${APP_VARIANT:-development}\" NODE_ENV=\"${NODE_ENV:-development}\" COREPACK_ENABLE_DOWNLOAD_PROMPT=\"${COREPACK_ENABLE_DOWNLOAD_PROMPT:-0}\" EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE=\"${EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE:-1}\" WATCHER_PORT=\"${WATCHER_PORT:-{{port}}}\" CDP_PORT=\"${CDP_PORT:-9222}\"; for k in AUDIOLAB_NPM_TOKEN EAS_PROJECT_ID APPLE_TEAM_ID; do if [ -z \"$(printenv $k)\" ]; then v=$(launchctl getenv \"$k\" 2>/dev/null || true); if [ -z \"$v\" ]; then v=$(tmux show-environment -g \"$k\" 2>/dev/null | sed \"s/^$k=//\" || true); fi; if [ -n \"$v\" ]; then export \"$k=$v\"; fi; fi; done; PLATFORM={{platform}} IOS_SIMULATOR={{simulator}} ADB_SERIAL={{adb_serial}} bash {{repo}}/apps/playground/scripts/agentic/preflight.sh",
+    "health_check": "export PATH=\"${HOME}/.asdf/shims:${HOME}/.asdf/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH\"; export APP_VARIANT=\"${APP_VARIANT:-development}\" NODE_ENV=\"${NODE_ENV:-development}\" COREPACK_ENABLE_DOWNLOAD_PROMPT=\"${COREPACK_ENABLE_DOWNLOAD_PROMPT:-0}\" EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE=\"${EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE:-1}\" WATCHER_PORT=\"${WATCHER_PORT:-{{port}}}\" CDP_PORT=\"${CDP_PORT:-9222}\"; for k in AUDIOLAB_NPM_TOKEN EAS_PROJECT_ID APPLE_TEAM_ID; do if [ -z \"$(printenv $k)\" ]; then v=$(launchctl getenv \"$k\" 2>/dev/null || true); if [ -z \"$v\" ]; then v=$(tmux show-environment -g \"$k\" 2>/dev/null | sed \"s/^$k=//\" || true); fi; if [ -n \"$v\" ]; then export \"$k=$v\"; fi; fi; done; bash {{repo}}/apps/playground/scripts/agentic/app-state.sh --device {{simulator}} route",
+    "dev_server_check": "export PATH=\"${HOME}/.asdf/shims:${HOME}/.asdf/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH\"; export APP_VARIANT=\"${APP_VARIANT:-development}\" NODE_ENV=\"${NODE_ENV:-development}\" COREPACK_ENABLE_DOWNLOAD_PROMPT=\"${COREPACK_ENABLE_DOWNLOAD_PROMPT:-0}\" EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE=\"${EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE:-1}\" WATCHER_PORT=\"${WATCHER_PORT:-{{port}}}\" CDP_PORT=\"${CDP_PORT:-9222}\"; for k in AUDIOLAB_NPM_TOKEN EAS_PROJECT_ID APPLE_TEAM_ID; do if [ -z \"$(printenv $k)\" ]; then v=$(launchctl getenv \"$k\" 2>/dev/null || true); if [ -z \"$v\" ]; then v=$(tmux show-environment -g \"$k\" 2>/dev/null | sed \"s/^$k=//\" || true); fi; if [ -n \"$v\" ]; then export \"$k=$v\"; fi; fi; done; lsof -nP -iTCP:{{port}} -sTCP:LISTEN >/dev/null 2>&1",
+    "recipe_action_manifest": "export PATH=\"${HOME}/.asdf/shims:${HOME}/.asdf/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH\"; export APP_VARIANT=\"${APP_VARIANT:-development}\" NODE_ENV=\"${NODE_ENV:-development}\" COREPACK_ENABLE_DOWNLOAD_PROMPT=\"${COREPACK_ENABLE_DOWNLOAD_PROMPT:-0}\" EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE=\"${EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE:-1}\" WATCHER_PORT=\"${WATCHER_PORT:-{{port}}}\" CDP_PORT=\"${CDP_PORT:-9222}\"; for k in AUDIOLAB_NPM_TOKEN EAS_PROJECT_ID APPLE_TEAM_ID; do if [ -z \"$(printenv $k)\" ]; then v=$(launchctl getenv \"$k\" 2>/dev/null || true); if [ -z \"$v\" ]; then v=$(tmux show-environment -g \"$k\" 2>/dev/null | sed \"s/^$k=//\" || true); fi; if [ -n \"$v\" ]; then export \"$k=$v\"; fi; fi; done; cd {{repo}}/apps/playground && node scripts/agentic/recipe-v1/run-recipe-v1.mjs manifest",
+    "recipe_doctor": "export PATH=\"${HOME}/.asdf/shims:${HOME}/.asdf/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH\"; export APP_VARIANT=\"${APP_VARIANT:-development}\" NODE_ENV=\"${NODE_ENV:-development}\" COREPACK_ENABLE_DOWNLOAD_PROMPT=\"${COREPACK_ENABLE_DOWNLOAD_PROMPT:-0}\" EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE=\"${EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE:-1}\" WATCHER_PORT=\"${WATCHER_PORT:-{{port}}}\" CDP_PORT=\"${CDP_PORT:-9222}\"; for k in AUDIOLAB_NPM_TOKEN EAS_PROJECT_ID APPLE_TEAM_ID; do if [ -z \"$(printenv $k)\" ]; then v=$(launchctl getenv \"$k\" 2>/dev/null || true); if [ -z \"$v\" ]; then v=$(tmux show-environment -g \"$k\" 2>/dev/null | sed \"s/^$k=//\" || true); fi; if [ -n \"$v\" ]; then export \"$k=$v\"; fi; fi; done; cd {{repo}}/apps/playground && yarn recipe:doctor --json | node -e 'let s=\"\"; process.stdin.on(\"data\",d=>s+=d); process.stdin.on(\"end\",()=>{const d=JSON.parse(s); const pass=d.status===\"pass\"; console.log(JSON.stringify({runner_protocol_version:1,status:pass?\"pass\":\"fail\",checks:[{id:\"expo_recipe_doctor\",status:pass?\"pass\":\"fail\",message:\"@farmslot/expo-recipe doctor readiness\"}]}));})'",
+    "recipe_run": "export PATH=\"${HOME}/.asdf/shims:${HOME}/.asdf/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH\"; export APP_VARIANT=\"${APP_VARIANT:-development}\" NODE_ENV=\"${NODE_ENV:-development}\" COREPACK_ENABLE_DOWNLOAD_PROMPT=\"${COREPACK_ENABLE_DOWNLOAD_PROMPT:-0}\" EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE=\"${EXPO_PUBLIC_FARMSLOT_RECIPE_BRIDGE:-1}\" WATCHER_PORT=\"${WATCHER_PORT:-{{port}}}\" CDP_PORT=\"${CDP_PORT:-9222}\"; for k in AUDIOLAB_NPM_TOKEN EAS_PROJECT_ID APPLE_TEAM_ID; do if [ -z \"$(printenv $k)\" ]; then v=$(launchctl getenv \"$k\" 2>/dev/null || true); if [ -z \"$v\" ]; then v=$(tmux show-environment -g \"$k\" 2>/dev/null | sed \"s/^$k=//\" || true); fi; if [ -n \"$v\" ]; then export \"$k=$v\"; fi; fi; done; cd {{repo}}/apps/playground && node scripts/agentic/recipe-v1/run-recipe-v1.mjs run {{recipe_path}} --artifacts-dir {{artifacts_dir}} --device \"${FARMSLOT_RECIPE_DEVICE:-{{simulator}}}\"",
     "recycle": "xcrun simctl shutdown {{simulator}}"
   },
   "health": {
-    "dev_server_log": "{{app}}/.agent/metro.log",
+    "dev_server_log": "apps/playground/.agent/metro.log",
     "dev_server_name": "Metro"
   },
   "platforms": {
@@ -135,5 +138,6 @@
         "shutdown": "lsof -ti :{{port}} 2>/dev/null | xargs kill 2>/dev/null; true"
       }
     }
-  }
+  },
+  "recipe_run_supports_playback_slow": false
 }
