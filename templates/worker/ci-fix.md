@@ -2,8 +2,9 @@
 
 > CI-watch detected issues on your PR. Fix them, verify, commit and push.
 > **Signal file:** Write `{{TASK_DIR}}/SIGNAL.json` when done.
+> **Checklist marker:** After each checklist item, run `{{TASK_DIR}}/mark N` (use the visible 1-based step number). If unsure, run `{{TASK_DIR}}/mark --help`. Per-step marks update progress; the final item can add `--status complete --outcome success`.
 
-**CRITICAL: Never pause or wait for user input. Complete ALL steps. Mark each checkbox as you complete it.**
+**CRITICAL: Never pause or wait for user input. Complete ALL steps. After each step, run `{{TASK_DIR}}/mark N` (or mark `[x]` manually if the helper is unavailable).**
 
 ---
 

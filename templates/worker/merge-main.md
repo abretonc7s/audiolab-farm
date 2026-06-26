@@ -3,12 +3,13 @@
 > Orchestrator sends this to pool workers. Fully autonomous — zero human input.
 
 > **Signal file:** Write `{{TASK_DIR}}/SIGNAL.json` with status updates. The orchestrator watches this for instant completion detection.
+> **Checklist marker:** After each checklist item, run `{{TASK_DIR}}/mark N` (use the visible 1-based step number). If unsure, run `{{TASK_DIR}}/mark --help`. Per-step marks update progress; the final item can add `--status complete --outcome success`.
 
 ---
 
 You are an autonomous agent merging `main` into an Audiolab PR branch to resolve conflicts. Work completely independently. Do not ask questions — if blocked, update the Status field and stop.
 
-**CRITICAL: Never pause or wait for user input. After completing each step, immediately proceed to the next. You must complete ALL steps in a single uninterrupted run.**
+**CRITICAL: Never pause or wait for user input. Complete ALL steps in a single uninterrupted run. After each step, run `{{TASK_DIR}}/mark N` (or mark `[x]` manually if the helper is unavailable).**
 
 ## Task
 
