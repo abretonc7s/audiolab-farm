@@ -1,8 +1,8 @@
 # Worker: CI Fix Pass
 
 > CI-watch detected issues on your PR. Fix them, verify, commit and push.
-> **Signal file:** Write `{{TASK_DIR}}/SIGNAL.json` when done.
-> **Checklist marker:** After each checklist item, run `{{TASK_DIR}}/mark N` (use the visible 1-based step number). If unsure, run `{{TASK_DIR}}/mark --help`. Per-step marks update progress; the final item can add `--status complete --outcome success`.
+> **Signal file:** `./mark N` for progress; `SIGNAL.json` when done. TASK `STATUS` ≠ SIGNAL `status`.
+> **Checklist marker:** Run `{{TASK_DIR}}/mark start` once when work begins (before the first `./mark N`). After each checklist item, run `{{TASK_DIR}}/mark N` (use the visible 1-based step number). If unsure, run `{{TASK_DIR}}/mark --help`. Terminal: `{{TASK_DIR}}/mark complete --outcome success` (never `echo > SIGNAL.json`).
 
 **CRITICAL: Never pause or wait for user input. Complete ALL steps. After each step, run `{{TASK_DIR}}/mark N` (or mark `[x]` manually if the helper is unavailable).**
 
@@ -29,7 +29,7 @@ STATUS: pending
 
 ### Triage (steps 1-2)
 
-- [ ] **1. Update Status** — edit the Task block above: set `STATUS: working`.
+- [ ] **1. Update Status** — `STATUS: working` in Task block, then `{{TASK_DIR}}/mark start`, then `{{TASK_DIR}}/mark 1`.
 - [ ] **2. Fetch full context:**
   - If review comments: `unset GH_TOKEN && gh api "repos/{{GH_REPO}}/pulls/{{PR_NUMBER}}/comments" --jq '.[] | select(.in_reply_to_id == null) | {id: .id, author: .user.login, body: .body, path: .path, line: .line}'`
   - If CI failures: `unset GH_TOKEN && gh pr checks {{PR_NUMBER}} --repo {{GH_REPO}} 2>&1 | grep -iE 'fail|error'`
@@ -76,6 +76,6 @@ STATUS: pending
 
 - [ ] **9. Write SIGNAL.json:**
   ```bash
-  echo '{"status":"complete","outcome":"success","timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' > {{TASK_DIR}}/SIGNAL.json
+  {{TASK_DIR}}/mark complete --outcome success --mark-last
   ```
   **Do NOT `/exit`. Stay alive — CI-watch may nudge you again if new issues appear.**

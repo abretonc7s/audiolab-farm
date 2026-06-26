@@ -2,8 +2,8 @@
 
 > Orchestrator sends this to pool workers. Fully autonomous — zero human input.
 
-> **Signal file:** Write `{{TASK_DIR}}/SIGNAL.json` with status updates. The orchestrator watches this for instant completion detection.
-> **Checklist marker:** After each checklist item, run `{{TASK_DIR}}/mark N` (use the visible 1-based step number). If unsure, run `{{TASK_DIR}}/mark --help`. Per-step marks update progress; the final item can add `--status complete --outcome success`.
+> **Signal file:** `./mark N` for progress; `SIGNAL.json` only when done. TASK `STATUS` ≠ SIGNAL `status`.
+> **Checklist marker:** Run `{{TASK_DIR}}/mark start` once when work begins (before the first `./mark N`). After each checklist item, run `{{TASK_DIR}}/mark N` (use the visible 1-based step number). If unsure, run `{{TASK_DIR}}/mark --help`. Terminal: `{{TASK_DIR}}/mark complete --outcome success` (never `echo > SIGNAL.json`).
 
 ---
 
@@ -28,7 +28,7 @@ WATCHER_PORT: {{WATCHER_PORT}}
 
 ## Checklist
 
-- [ ] **1. Update Status** — edit the Task block above: set `STATUS: working`.
+- [ ] **1. Update Status** — `STATUS: working` in Task block, then `{{TASK_DIR}}/mark start`, then `{{TASK_DIR}}/mark 1`.
 - [ ] **2. Confirm branch** — verify you are on `{{BRANCH}}`.
 - [ ] **3. Fetch latest main**:
   ```bash
@@ -48,5 +48,5 @@ WATCHER_PORT: {{WATCHER_PORT}}
 - [ ] **8. Update Status** — set `STATUS: done`.
 - [ ] **9. Write completion signal**:
   ```bash
-  echo '{"status":"complete","outcome":"success","timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' > {{TASK_DIR}}/SIGNAL.json
+  {{TASK_DIR}}/mark complete --outcome success --mark-last
   ```
