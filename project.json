@@ -60,7 +60,7 @@
                 ".agent/agentic-toolkit.md"
               ]
             },
-            "merge-main": {
+            "update-branch": {
               "includes": [
                 "CLAUDE.local.base.md",
                 "CLAUDE.local.agent.md",
