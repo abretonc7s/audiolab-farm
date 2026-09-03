@@ -107,7 +107,12 @@
       "label": "iOS Sim",
       "streamable": true,
       "controllable": true,
-      "watch": { "type": "process-poll", "cmd": "xcrun simctl list devices booted 2>/dev/null | grep -q '{{simulator}}'" },
+      "watch": {
+        "type": "process-poll",
+        "provider": "ios-simulator-inventory",
+        "target": "{{simulator}}",
+        "cmd": "xcrun simctl list devices booted 2>/dev/null | grep -q '{{simulator}}'"
+      },
       "hooks": {
         "health": "xcrun simctl list devices booted 2>/dev/null | grep -q '{{simulator}}'",
         "boot": "xcrun simctl boot '{{simulator}}'",
