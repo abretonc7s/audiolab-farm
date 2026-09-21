@@ -2,7 +2,7 @@
 
 > Orchestrator sends this to pool workers. Fully autonomous — zero human input.
 
-> **Signal file:** `./mark N` for progress; `SIGNAL.json` only when done. TASK `STATUS` ≠ SIGNAL `status`.
+> **Signal file:** `./mark N` for progress; `SIGNAL.json` only when done.
 > **Checklist marker:** Run `{{TASK_DIR}}/mark start` once when work begins (before the first `./mark N`). After each checklist item, run `{{TASK_DIR}}/mark N` (use the visible 1-based step number). If unsure, run `{{TASK_DIR}}/mark --help`. Terminal: `{{TASK_DIR}}/mark complete --outcome success` (never `echo > SIGNAL.json`).
 
 ---
@@ -20,7 +20,6 @@ PR_BRANCH: {{PR_BRANCH}}
 PR_URL: {{PR_URL}}
 REVIEW_TIER: {{REVIEW_TIER}}
 TASK_DIR: {{TASK_DIR}}
-STATUS: pending
 SESSION: {{SESSION}}
 REPO: {{REPO}}
 PLATFORM: {{PLATFORM}}
@@ -41,14 +40,14 @@ WATCHER_PORT: {{WATCHER_PORT}}
 
 ## Checklist
 
-**When updating STATUS or checkboxes, make the edit idempotent.** If a line is already `[x]`, do not try to patch it again; verify the file state and continue.
+**When updating checkboxes, make the edit idempotent.** If a line is already `[x]`, do not try to patch it again; verify the file state and continue.
 
 Execute top-to-bottom. Every step is mandatory. Do NOT skip, reorder, or batch steps.
 
 ### Setup
 
 - [ ] **1. Read the recipe docs** — read `{{REPO}}/.agent/agentic-toolkit.md` and `{{REPO}}/scripts/agentic/README.md`.
-- [ ] **2. Update Status** — `STATUS: working` in Task block, then `{{TASK_DIR}}/mark start`, then `{{TASK_DIR}}/mark 2`.
+- [ ] **2. Start** — `{{TASK_DIR}}/mark start`, then `{{TASK_DIR}}/mark 2`.
 - [ ] **3. Fetch PR metadata and diff** — read the PR body, changed files, and full diff before forming conclusions.
 - [ ] **4. Resolve the impacted app and export working vars:**
   ```bash
@@ -102,8 +101,7 @@ Execute top-to-bottom. Every step is mandatory. Do NOT skip, reorder, or batch s
 
 - [ ] **12. Write `{{TASK_DIR}}/artifacts/review.md`** — findings first with file references, then open questions, then a brief summary.
 - [ ] **13. Include a validation section** — say whether live recipe validation was run, skipped, or not applicable, and list the exact command and artifact path if it was run.
-- [ ] **14. Update Status** — set `STATUS: done`.
-- [ ] **15. Write completion signal**:
+- [ ] **14. Write completion signal**:
   ```bash
   {{TASK_DIR}}/mark complete --outcome success --mark-last
   ```

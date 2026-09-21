@@ -2,7 +2,7 @@
 
 > Orchestrator sends this to pool workers. Fully autonomous — zero human input.
 
-> **Signal file:** `./mark N` for progress; `SIGNAL.json` only when done. TASK `STATUS` ≠ SIGNAL `status`.
+> **Signal file:** `./mark N` for progress; `SIGNAL.json` only when done.
 > **Checklist marker:** Run `{{TASK_DIR}}/mark start` once when work begins (before the first `./mark N`). After each checklist item, run `{{TASK_DIR}}/mark N` (use the visible 1-based step number). If unsure, run `{{TASK_DIR}}/mark --help`. Terminal: `{{TASK_DIR}}/mark complete --outcome success` (never `echo > SIGNAL.json`).
 
 ---
@@ -20,7 +20,6 @@ TITLE: {{TITLE}}
 BRANCH: {{BRANCH}}
 PR_NUMBER: {{PR_NUMBER}}
 TASK_DIR: {{TASK_DIR}}
-STATUS: pending
 SESSION: {{SESSION}}
 REPO: {{REPO}}
 PLATFORM: {{PLATFORM}}
@@ -57,14 +56,14 @@ IOS_SIMULATOR: {{IOS_SIMULATOR}}
 
 ## Checklist
 
-**When updating STATUS or checkboxes, make the edit idempotent.** If a line is already `[x]`, do not try to patch it again; verify the file state and continue.
+**When updating checkboxes, make the edit idempotent.** If a line is already `[x]`, do not try to patch it again; verify the file state and continue.
 
 Execute top-to-bottom. Every step is mandatory. Do NOT skip, reorder, or batch steps.
 
 
 ### Early no-change exit (before code/PR mutations)
 
-After `STATUS: working`, first decide if a code fix is still needed. If the bug is already fixed or cannot be reproduced in a valid target environment, do not create a fake commit/PR. Write `{{TASK_DIR}}/artifacts/no-change-report.md` with proof/repro steps, observed result, and evidence paths, then write one terminal `SIGNAL.json` and stop.
+After `mark start`, first decide if a code fix is still needed. If the bug is already fixed or cannot be reproduced in a valid target environment, do not create a fake commit/PR. Write `{{TASK_DIR}}/artifacts/no-change-report.md` with proof/repro steps, observed result, and evidence paths, then write one terminal `SIGNAL.json` and stop.
 
 - Already fixed / not reproducible: `status=complete`, `outcome=success`, `disposition=already_fixed|not_reproducible`, plus evidence `{ reportPath, artifacts, confidence, noCodeChange: true, reproductionAttempted: true }`.
 - Blocked: use `status=blocked`, `outcome=partial`, `disposition=blocked` for branch/env/auth/device/CDP/precondition problems. Never call setup failure `not_reproducible`.
@@ -77,7 +76,7 @@ Signal shape:
 ### Setup
 
 - [ ] **1. Read the recipe docs** — read `{{REPO}}/.agent/agentic-toolkit.md`, `{{REPO}}/scripts/agentic/README.md`, and the target app quick reference under `apps/*/docs/AGENTIC_FEEDBACK_LOOPS.md`.
-- [ ] **2. Update Status** — `STATUS: working` in Task block, then `{{TASK_DIR}}/mark start`, then `{{TASK_DIR}}/mark 2`.
+- [ ] **2. Start** — `{{TASK_DIR}}/mark start`, then `{{TASK_DIR}}/mark 2`.
 - [ ] **3. Resolve branch and PR number:**
   - If `PR_NUMBER` is set, confirm you are on `{{BRANCH}}`.
   - If `PR_NUMBER` is empty, create the branch, push it, and open a draft PR.
@@ -154,8 +153,7 @@ Recipe rules:
 
 - [ ] **18. Write `{{TASK_DIR}}/artifacts/report.md`** — include summary, root cause, changed files, tests, and recipe evidence.
 - [ ] **19. Commit and push** — keep the commit message concise and factual.
-- [ ] **20. Update Status** — set `STATUS: done`.
-- [ ] **21. Write completion signal**:
+- [ ] **20. Write completion signal**:
   ```bash
   {{TASK_DIR}}/mark complete --outcome success --disposition fixed --mark-last
   ```

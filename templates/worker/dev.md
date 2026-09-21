@@ -1,6 +1,6 @@
 # Worker: Dev
 
-> **Signal file:** `./mark N` for progress; `SIGNAL.json` only when done. TASK `STATUS` ≠ SIGNAL `status`.
+> **Signal file:** `./mark N` for progress; `SIGNAL.json` only when done.
 > **Checklist marker:** Run `{{TASK_DIR}}/mark start` once when work begins (before the first `./mark N`). After each checklist item, run `{{TASK_DIR}}/mark N` (use the visible 1-based step number). If unsure, run `{{TASK_DIR}}/mark --help`. Terminal: `{{TASK_DIR}}/mark complete --outcome success` (never `echo > SIGNAL.json`).
 
 ---
@@ -17,7 +17,6 @@ TICKET_URL: {{TICKET_URL}}
 TITLE: {{TITLE}}
 BRANCH: {{BRANCH}}
 TASK_DIR: {{TASK_DIR}}
-STATUS: pending
 SESSION: {{SESSION}}
 REPO: {{REPO}}
 PLATFORM: {{PLATFORM}}
@@ -46,14 +45,14 @@ WATCHER_PORT: {{WATCHER_PORT}}
 
 ## Checklist
 
-**When updating STATUS or checkboxes, make the edit idempotent.** If a line is already `[x]`, do not try to patch it again; verify the file state and continue.
+**When updating checkboxes, make the edit idempotent.** If a line is already `[x]`, do not try to patch it again; verify the file state and continue.
 
 Execute top-to-bottom. Every step is mandatory. Do NOT skip, reorder, or batch steps.
 
 ### Setup
 
 - [ ] **1. Read the target-app docs** — read `{{REPO}}/.agent/agentic-toolkit.md` and `{{REPO}}/scripts/agentic/README.md`.
-- [ ] **2. Update Status** — `STATUS: working` in Task block, then `{{TASK_DIR}}/mark start`, then `{{TASK_DIR}}/mark 2`.
+- [ ] **2. Start** — `{{TASK_DIR}}/mark start`, then `{{TASK_DIR}}/mark 2`.
 - [ ] **3. Confirm branch** — verify you are on `{{BRANCH}}`. If not, create or switch to it.
 - [ ] **4. Resolve the target app and export working vars:**
   ```bash
@@ -114,8 +113,7 @@ Execute top-to-bottom. Every step is mandatory. Do NOT skip, reorder, or batch s
 
 - [ ] **13. Write `{{TASK_DIR}}/artifacts/report.md`** — summarize the feature, files changed, tests run, and recipe evidence if any.
 - [ ] **14. Commit and push** — keep the commit message concise.
-- [ ] **15. Update Status** — set `STATUS: done`.
-- [ ] **16. Write completion signal**:
+- [ ] **15. Write completion signal**:
   ```bash
   {{TASK_DIR}}/mark complete --outcome success --mark-last
   ```
