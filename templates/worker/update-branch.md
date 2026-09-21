@@ -2,14 +2,14 @@
 
 > Orchestrator sends this to pool workers. Fully autonomous — zero human input.
 
-> **Signal file:** `./mark N` for progress; `SIGNAL.json` only when done. TASK `STATUS` ≠ SIGNAL `status`.
+> **Signal file:** `./mark N` for progress; `SIGNAL.json` only when done.
 > **Checklist marker:** Run `{{TASK_DIR}}/mark start` once when work begins (before the first `./mark N`). After each checklist item, run `{{TASK_DIR}}/mark N` (use the visible 1-based step number). If unsure, run `{{TASK_DIR}}/mark --help`. Terminal: `{{TASK_DIR}}/mark complete | {{TASK_DIR}}/mark no-change --reason "…" | {{TASK_DIR}}/mark blocked --reason "…"` (never hand-write `SIGNAL.json`).
 
 ---
 
 You are an autonomous agent bringing an Audiolab PR branch up to date against its base
 branch and keeping CI green. Work completely independently. Do not ask questions — if
-blocked, update the Status field and stop.
+blocked, run `{{TASK_DIR}}/mark blocked --reason "<reason>"` and stop.
 
 **CRITICAL: Never pause or wait for user input. Complete ALL steps in a single uninterrupted run.**
 
@@ -22,7 +22,6 @@ BRANCH: {{PR_BRANCH}}
 PR_BRANCH: {{PR_BRANCH}}
 BRANCH_UPDATE_STRATEGY: {{BRANCH_UPDATE_STRATEGY}}
 TASK_DIR: {{TASK_DIR}}
-STATUS: pending
 ```
 
 This is an **update-branch** run: bring this PR branch up to date against its base
@@ -44,7 +43,7 @@ Record the concrete strategy you actually used in the outcome artifact.
 
 ## Checklist
 
-- [ ] **1. Update Status** — set `STATUS: working` in the Task block, then `{{TASK_DIR}}/mark start`, then `{{TASK_DIR}}/mark 1`.
+- [ ] **1. Start** — `{{TASK_DIR}}/mark start`, then `{{TASK_DIR}}/mark 1`.
 - [ ] **2. Confirm target + strategy** — verify you are on `{{PR_BRANCH}}`; resolve `BRANCH_UPDATE_STRATEGY` (rebase | merge | project-default) to the concrete strategy you will use.
 - [ ] **3. Fetch latest base**:
   ```bash
@@ -60,4 +59,4 @@ Record the concrete strategy you actually used in the outcome artifact.
 - [ ] **7. Push** — publish the updated branch. For `rebase`, use `git push --force-with-lease`; for `merge`, a normal `git push origin {{PR_BRANCH}}`. Record the exact push command used.
 - [ ] **8. Write report** — create `{{TASK_DIR}}/artifacts/report.md` recording: **selected strategy** (rebase | merge), **conflict resolution summary**, **typecheck / recipe results**, **push command used**, and **risk notes** (force-push impact, follow-up needed).
 - [ ] **9. Write `{{TASK_DIR}}/artifacts/learnings.md`** — required packaged evidence. Use 3–5 bullets on key learnings or struggles during the session; if nothing relevant: `- Nothing relevant — straightforward run; no blockers or surprises.`
-- [ ] **10. Update Status and signal** — set `STATUS: done`, then run: `{{TASK_DIR}}/mark complete --mark-last`
+- [ ] **10. Signal completion** — run: `{{TASK_DIR}}/mark complete --mark-last`
