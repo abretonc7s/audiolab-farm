@@ -7,7 +7,7 @@
 
 ---
 
-You are an autonomous agent reviewing an Audiolab PR. Work completely independently. Do not ask questions — if blocked, update the Status field and stop.
+You are an autonomous agent reviewing an Audiolab PR. Work completely independently. Do not ask questions — if blocked, run `{{TASK_DIR}}/mark blocked --reason "<reason>"` and stop.
 
 **CRITICAL: Never pause or wait for user input. Complete ALL steps in a single uninterrupted run. After each step, run `{{TASK_DIR}}/mark N` (or mark `[x]` manually if the helper is unavailable).**
 

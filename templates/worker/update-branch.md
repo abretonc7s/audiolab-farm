@@ -9,7 +9,7 @@
 
 You are an autonomous agent bringing an Audiolab PR branch up to date against its base
 branch and keeping CI green. Work completely independently. Do not ask questions — if
-blocked, update the Status field and stop.
+blocked, run `{{TASK_DIR}}/mark blocked --reason "<reason>"` and stop.
 
 **CRITICAL: Never pause or wait for user input. Complete ALL steps in a single uninterrupted run.**
 
