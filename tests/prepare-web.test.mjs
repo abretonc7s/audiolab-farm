@@ -79,7 +79,7 @@ test('an unavailable exact version fails instead of keeping old published assets
   assert.equal(existsSync(path.join(f.repo, 'apps/sherpa-voice/public/wasm', artifacts[0])), false);
 });
 
-test('source setup invokes the canonical helper without rewriting other hooks', () => {
+test('source setup invokes the canonical dependency preparation helper', () => {
   const config = JSON.parse(readFileSync(new URL('../project.json', import.meta.url), 'utf8'));
-  assert.match(config.hooks.setup, /&& bash "\{\{farmslot_dir\}\}\/projects\/audiolab-farm\/scripts\/prepare-web\.sh" "\{\{repo\}\}"$/);
+  assert.match(config.hooks.setup, /prepare-deps\.mjs/);
 });
