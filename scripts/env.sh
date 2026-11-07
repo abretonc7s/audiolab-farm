@@ -10,6 +10,9 @@ for key in AUDIOLAB_NPM_TOKEN EAS_PROJECT_ID APPLE_TEAM_ID; do
     if [ -z "$value" ]; then
       value="$(tmux show-environment -g "$key" 2>/dev/null | sed "s/^$key=//" || true)"
     fi
+    if [ -z "$value" ]; then
+      value="$(security find-generic-password -a deeeed -s "$key" -w 2>/dev/null || true)"
+    fi
     if [ -n "$value" ]; then export "$key=$value"; fi
   fi
 done
